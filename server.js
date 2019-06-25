@@ -3,6 +3,14 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var cors = require('cors');
+var session = require('express-session');
+
+app.use (session ({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 1000*60*60*24 }
+  }))
 
 const port = 8888
 var mangUser = {}
@@ -30,8 +38,8 @@ io.on('connection', function (socket) {
         console.log(data)
         io.sockets.emit("server_send_message", { username: data.username, msg: data.msg })
     })
-    socket.on('disconnect', (data) => {
-        delete mangUser[data]
+    socket.on('disconnect', () => {
+        delete mangUser[socket.Username]
         console.log(socket.id + 'disconnected')
     })
 })

@@ -2,9 +2,19 @@ import React from 'react';
 import io from 'socket.io-client';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import {
+    Wrapper,
+    Title,
+    Left,
+    LeftTitle,
+    MenuUser,
+    Right,
+    MenuMessege,
+    Block,
+    UserName,
+    SignOutBtn
+} from './chatStyle'
 import * as actions from '../../redux/actions/username'
-// import styled from 'styled-components';
-import './chat.css';
 
 class Chat extends React.Component {
     constructor(props) {
@@ -59,30 +69,30 @@ class Chat extends React.Component {
 
         console.log("render")
         return (
-            <div id="wrapper">
-                <h1>DEMO CHAT SOCKET IO - NODEJS</h1>
+            <Wrapper>
+                <Title>DEMO CHAT SOCKET IO - NODEJS</Title>
                 <p>
                     Welcome {this.props.username} !!
-                    <button onClick={this.signout}>Sign out</button>
+                    <SignOutBtn onClick={this.signout}>Sign out</SignOutBtn>
                 </p>
-                <div class="block"></div>
-                <div id="left">
-                    <div id="title">Users Online</div>
+                <Block></Block>
+                <Left>
+                    <LeftTitle>Users Online</LeftTitle>
                     <div id="danhsachUsersOnline">
                         {mangUsers.map(das => (
                             <div>{das}</div>
                         ))}
                     </div>
-                </div>
-                <div id="right">
-                    <div id="dsMsg">
+                </Left>
+                <Right>
+                    <MenuMessege>
                         {this.userMessage}
-                    </div>
-                    <div class="block"></div>
+                    </MenuMessege>
+                    <Block></Block>
                     <textarea rows="2" cols="40" value={this.state.postVal} onChange={this.handleChange} ></textarea>
                     <input type="submit" className="button" onClick={this.sendMessage} value="Comment" />
-                </div>
-            </div>
+                </Right>
+            </Wrapper>
         )
     }
 }

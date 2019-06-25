@@ -2,16 +2,22 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
   Redirect,
-  withRouter,
 } from 'react-router-dom';
-import axios from 'axios';
+import {
+  Login,
+  LoginForm,
+  LoginImg,
+  LoginContainer,
+  LoginInput,
+  LoginSubmit,
+  ImgAvatar,
+} from './loginStyle'
 import * as actions from '../../redux/actions/username';
 import io from 'socket.io-client';
-import './App.css';
-import avatar from '../avatar.png'
+import avatar from '../avatar.png';
 
 
-class Login extends React.Component {
+class LoginPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -28,19 +34,8 @@ class Login extends React.Component {
   })
   }
 
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   if (this.props.username !== nextProps.username) {
-  //     return true;
-  //   }
-  //   if (this.state.mangUsers !== nextState.mangUsers) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
-
   handleSubmit = (e) => {
     e.preventDefault()
-    console.log(this.state.username)
     const { username } = this.refs
     this.socket.emit("client-send-username", username.value)
 
@@ -65,25 +60,18 @@ class Login extends React.Component {
       return <Redirect to={from} />
     }
     return (
-      <div className="App">
-        <form onSubmit={this.handleSubmit}>
-          <div className="imgcontainer">
-            <img src={avatar} alt="Avatar" className="avatar" />
-          </div>
-          <div className="container">
-            <label for="uname"><b>Username</b></label>
-            <input type="text" placeholder="Enter Username" onChange={this.handleChange} ref="username" name="uname" required />
-
-            {/* <label for="psw"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" ref="password" name="psw" required /> */}
-
-            <button type="submit">Login</button>
-            <label>
-              {/* <input type="checkbox" checked="checked" name="remember" /> Remember me */}
-            </label>
-          </div>
-        </form>
-      </div>
+      <Login>
+        <LoginForm onSubmit={this.handleSubmit}>
+          <LoginImg >
+            <ImgAvatar src={avatar} alt="Avatar" className="avatar" />
+          </LoginImg>
+          <LoginContainer>
+            <label htmlFor="uname"><b>Username</b></label>
+            <LoginInput type="text" placeholder="Enter Username" onChange={this.handleChange} ref="username" name="uname" required />
+            <LoginSubmit type="submit">Login</LoginSubmit>
+          </LoginContainer>
+        </LoginForm>
+      </Login>
     );
   }
 }
@@ -101,4 +89,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
